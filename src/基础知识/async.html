@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function fn(args) {
+      return spawn(function* () {
+        // ...
+        yield setTimeout(() => {
+          console.log(done);
+        }, 3000);
+      });
+    }
+    function spawn(genF) {
+    return new Promise(function(resolve, reject) {
+      const gen = genF();
+      let count = 0;
+      function step(nextF) {
+        count++;
+        console.log(`执行第${count}次`);
+        let next;
+        try {
+          next = nextF();
+        } catch(e) {
+          return reject(e);
+        }
+        if(next.done) {
+          return resolve(next.value);
+        }
+        Promise.resolve(next.value).then(function(v) {
+          step(function() { return gen.next(v); });
+        }, function(e) {
+          step(function() { return gen.throw(e); });
+        });
+      }
+      step(function() { return gen.next(undefined); });
+    });
+  }
+  const func = fn();
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function inherit(c, p) {
+      const cProto = Object.create(p.prototype);
+      c.prototype = cProto;
+      c.prototype.constructor = c;
+    }
+    
+    function P(name, age) {
+      this.name = name;
+      this.age = age;
+    }
+
+    P.prototype.showName = function () {
+      console.log(this.name);
+    }
+
+    function C(name, age, habbit) {
+      P.call(this, name, age);
+      this.habbit = habbit;
+    }
+
+
+    inherit(C, P);
+    C.prototype.showHabbit = function () {
+      console.log(this.habbit);
+    }
+    const c1 = new C('xiaoming', 18, 'a')
+    const c2 = new C('xiaohong',17, 'b')
+    c1.showName();
+    c2.showName();
+    console.log(c1);
+    c1.showHabbit();
+    c2.showHabbit();
+  </script>
+</body>
+</html>

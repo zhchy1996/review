@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function Grandfather() { }
+      Grandfather.prototype.showGrandfather = function () {
+        console.log('grandfather');
+      }
+      function Fahter() { }
+      Fahter.prototype = Object.create(new Grandfather);
+      Fahter.prototype.showFather = function () {
+        console.log('father');
+      }
+      function Child() { }
+      Child.prototype = Object.create(new Fahter);
+      Child.prototype.showChild = function () {
+        console.log('father');
+      }
+
+      let child = new Child();
+      // 下面三个方法时如何访问的？
+      child.showGrandfather();
+      child.showFather();
+      child.showChild();
+      // 先别往下翻
+
+
+
+
+
+
+
+
+      child.showChild === child.__proto__.showChild === Child.showChild
+      child.showFather === chiild.__proto__.__proto__.showFather === Father.showFather
+      child.showGrandfather === child.__proto__.__proto__.__proto__.showGrandfather === Grandfather.showGrandfather
+  </script>
+</body>
+</html>
